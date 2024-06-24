@@ -61,7 +61,7 @@ namespace WebApplication1.Tests.Controller
 
             //Act
 
-            var result = controller.GetById(1);
+            var result = controller.GetTransactionByIdAsync(1);
             //Assert
 
             result.Should().NotBeNull();

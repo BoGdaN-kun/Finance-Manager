@@ -12,9 +12,9 @@ namespace WebApplication1.Tests.Controller
     internal class TransactionControllerTets
     {
         [Fact]
-        public async Task GetAllTransactions()
+        public async Task GetAllTransactionsAsync()
         {
-           *//*var transactioNRepostiroy = new Mock<ITransactionRepositoryAsync>();
+           */ /*var transactioNRepostiroy = new Mock<ITransactionRepositoryAsync>();
             var fakeTransactions = new List<Transaction>
             {
                 new Transaction {Id = 1, Amount = 100, Date = DateTime.Now, Type = "Credit", UserId = 1},
@@ -25,12 +25,13 @@ namespace WebApplication1.Tests.Controller
 
             var controller = new TransactionController(transactioNRepostiroy.Object);
 
-            var result = await controller.GetAllTransactions();
+            var result = await controller.GetAllTransactionsAsync();
 
             Assert.NotNull(result);
-            Assert.IsType<OkObjectResult>(result);*//*
+            Assert.IsType<OkObjectResult>(result);*/ /*
         }
 
     }
 }
 */
+
