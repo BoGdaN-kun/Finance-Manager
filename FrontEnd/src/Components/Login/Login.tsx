@@ -11,7 +11,7 @@ function LoginComponent() {
     const navigate = useNavigate();
     const handleSubmit = async (e : any) => {
         e.preventDefault();
-        // Implement login functionality here
+        
         try {
             const response = await fetch('https://bogdan-mpp.azurewebsites.net/api/UserLogin/login', {
                 method: 'POST',
