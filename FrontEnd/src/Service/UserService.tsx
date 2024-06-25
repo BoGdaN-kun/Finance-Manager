@@ -1,27 +1,9 @@
-interface User {
-    id: string;
-    name: string;
-    email: string;
-    address: string;
-    phoneNumber: string;
-    age: number;
-}
-
-interface User2 {
-    id: string;
-    name: string;
-    email: string;
-    address: string;
-    phoneNumber: string;
-    age: number;
-    transactionCount: number;
-    Role?: string;
-}
+import {HomeUser, User} from "../Domain/IUser";
 
 
-//const baseurl = 'https://localhost:7235/api/UserControllerAsync';
-const baseurl = 'https://bogdan-mpp.azurewebsites.net/api/UserControllerAsync';
-export const getUsers2 = (page: number): Promise<User2[]> => {
+const baseurl = `${process.env.REACT_APP_API_URL}/api/User`;
+console.log(baseurl);
+export const getUsers = (page: number): Promise<HomeUser[]> => {
     const pageSize = 10; // Number of items per page
 
     const token = localStorage.getItem('token');
@@ -31,13 +13,13 @@ export const getUsers2 = (page: number): Promise<User2[]> => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
     };
-    return fetch(`https://bogdan-mpp.azurewebsites.net/api/UserControllerAsync/details?page=${page}&pageSize=${pageSize}`,
+    return fetch(`${baseurl}/details?page=${page}&pageSize=${pageSize}`,
         {
             headers: headers,
             credentials: 'include'
         })
         .then(res => res.json())
-        .then((users: User2[]) => {
+        .then((users: HomeUser[]) => {
             if (Array.isArray(users)) {
                 // Process array of objects
                 console.log(users);
@@ -63,7 +45,18 @@ export const deleteUser = (id: string): Promise<void> => {
 };
 
 export const getUserById = async (id: string): Promise<User> => {
-    const response = await fetch(`${baseurl}/${id}`);
+    const token = localStorage.getItem('token');
+    const headers = {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+    };
+    const response = await fetch(`${baseurl}/${id}`, {
+        headers: headers,
+        credentials: 'include'
+    });
+    if (response.status === 404) {
+        throw new Error('User not found');
+    }
     if (!response.ok) {
         throw new Error('Failed to fetch user');
     }
@@ -71,6 +64,7 @@ export const getUserById = async (id: string): Promise<User> => {
 };
 
 export const updateUser = async (id: string, userData: User): Promise<void> => {
+
     await fetch(`${baseurl}`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},
@@ -79,6 +73,13 @@ export const updateUser = async (id: string, userData: User): Promise<void> => {
     });
 };
 export const createUser = async (userData: User): Promise<void> => {
+
+    const token = localStorage.getItem('token');
+    const headers = {
+        'Content-Type': 'application',
+        'Authorization': `Bearer ${token}`
+    };
+
     await fetch(`${baseurl}`, {
         method: 'POST',
         headers: {"Content-Type": "application/json"},
