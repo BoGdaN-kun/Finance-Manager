@@ -7,7 +7,7 @@ Finance Manager is a comprehensive financial management system designed to strea
 Finance Manager enables users to track transactions, visualize data through dynamic charts, and manage user roles (admin/manager/regular user) with secure authentication and authorization mechanisms. The system is built with scalability and usability in mind, offering a seamless experience for users across different roles.
 
 ```
-"If you want to deploy this project or just change the domain, you can do that by modifying the .env file"
+If you want to deploy this project or just change the domain, you can do that by modifying the .env file
 ```
 ## Key Features
 
