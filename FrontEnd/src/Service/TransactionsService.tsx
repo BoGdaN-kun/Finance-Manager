@@ -1,7 +1,6 @@
-import {Transaction} from "../Domain/Transaction";
+import {ITransaction} from "../Interfaces/ITransaction";
 
-const baseUrl = 'https://bogdan-mpp.azurewebsites.net/api/TransactionControllerAsync';
-
+const baseUrl = `${process.env.REACT_APP_API_URL}/api/Transaction`;
 
 export const getTransactions2 = async (page: number) => {
     const pageSize = 20; // Number of items per page
@@ -10,13 +9,13 @@ export const getTransactions2 = async (page: number) => {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
     };
-    return fetch(`https://bogdan-mpp.azurewebsites.net/api/TransactionControllerAsync/detailsTransaction?page=${page}&pageSize=${pageSize}`,
+    return fetch(`${baseUrl}/detailsTransaction?page=${page}&pageSize=${pageSize}`,
         {
             headers: headers,
             credentials: 'include'
         })
         .then(res => res.json())
-        .then((transactions: Transaction[]) => {
+        .then((transactions: ITransaction[]) => {
             // Sort the transactions by date in descending order
             transactions.sort((a, b) => {
                 // Compare date strings directly
@@ -31,7 +30,7 @@ export const deleteTransaction = async (id: string) => {
     });
 };
 
-export const getTransactionById = async (id: string): Promise<Transaction> => {
+export const getTransactionById = async (id: string): Promise<ITransaction> => {
     const token = localStorage.getItem('token');
     const headers = {
         'Content-Type': 'application/json',
@@ -46,7 +45,7 @@ export const getTransactionById = async (id: string): Promise<Transaction> => {
     return await response.json();
 }
 
-export const updateTransaction = async (id: string, transactionData: Transaction) => {
+export const updateTransaction = async (id: string, transactionData: ITransaction) => {
     await fetch(`${baseUrl}`, {
         method: 'PUT',
         headers: {"Content-Type": "application/json"},
@@ -55,7 +54,7 @@ export const updateTransaction = async (id: string, transactionData: Transaction
     });
 }
 
-export const createTransaction = async (transactionData: Transaction) => {
+export const createTransaction = async (transactionData: ITransaction) => {
     await fetch(baseUrl, {
         method: 'POST',
         headers: {"Content-Type": "application/json"},

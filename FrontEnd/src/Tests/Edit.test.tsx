@@ -2,9 +2,9 @@ import React from 'react';
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import Edit from '../Components/User/Edit';
-import { getUserById, updateUser } from '../Service/Service';
+import { getUserById, updateUser } from '../Service/UserService';
 
-jest.mock('../Service/Service', () => ({
+jest.mock('../Service/UserService', () => ({
     getUserById: jest.fn(),
     updateUser: jest.fn(),
 }));

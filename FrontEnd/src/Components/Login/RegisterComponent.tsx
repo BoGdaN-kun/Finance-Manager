@@ -3,17 +3,12 @@ import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { TextField, Button, Typography, Container, Grid, Snackbar } from '@mui/material';
 
-interface User {
-    email: string;
-    password: string;
-    name: string;
-    address: string;
-    phoneNumber: string;
-    age: number;
-}
+import {RegistrationUser} from "../../Interfaces/IUser";
+
+
 
 function RegisterComponent() {
-    const [user, setUser] = useState<User>({
+    const [user, setUser] = useState<RegistrationUser>({
         email: '',
         password: '',
         name: '',
@@ -35,7 +30,7 @@ function RegisterComponent() {
                 return;
             }
 
-            const response = await fetch('https://bogdan-mpp.azurewebsites.net/api/UserLogin/register', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/UserLogin/register`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -44,7 +39,6 @@ function RegisterComponent() {
             });
 
             if (response.ok) {
-                // Redirect to login page after successful registration
                 navigate('/login');
             } else {
                 setError('Registration failed. Please try again.');

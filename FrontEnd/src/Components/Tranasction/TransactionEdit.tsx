@@ -1,7 +1,7 @@
 import {useParams} from "react-router-dom";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {Transaction} from "../../Domain/Transaction";
+import {ITransaction} from "../../Interfaces/ITransaction";
 import {getTransactionById, updateTransaction} from "../../Service/TransactionsService";
 import {Button, TextField} from "@mui/material";
 
@@ -9,7 +9,7 @@ import {Button, TextField} from "@mui/material";
 function TransactionEdit() {
     const {id} = useParams<{ id: string }>();
     const navigate = useNavigate();
-    const [Transaction, setTransaction] = useState<Transaction>();
+    const [Transaction, setTransaction] = useState<ITransaction>();
     const [amount, setAmount] = useState(0);
     const [date, setDate] = useState('');
     const [description, setDescription] = useState('');
@@ -38,7 +38,7 @@ function TransactionEdit() {
     const handleSubmission = async (event: React.FormEvent) => {
         event.preventDefault();
         if (!id) return;
-        const updatedTransaction: Transaction = {
+        const updatedTransaction: ITransaction = {
             id:id,
             amount,
             date,
@@ -49,7 +49,7 @@ function TransactionEdit() {
         try {
             await updateTransaction(id, updatedTransaction);
             setTransaction(updatedTransaction);
-            console.log('Transaction updated');
+            console.log('ITransaction updated');
             navigate('/transactions');
 
         } catch (error) {

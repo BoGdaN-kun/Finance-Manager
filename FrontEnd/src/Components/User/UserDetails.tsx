@@ -1,20 +1,13 @@
 import React, {useEffect, useState} from "react";
 import {Link, useParams} from "react-router-dom";
 import {CircularProgress, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper} from "@mui/material";
-import {getUserById} from "../../Service/Service";
+import  {getUserById} from "../../Service/UserService";
+import {User} from "../../Interfaces/IUser";
 
-interface UserData {
-    id: string;
-    name: string;
-    email: string;
-    address: string;
-    phoneNumber: string;
-    age: number;
-}
 
 function UserDetails() {
     const {id} = useParams();
-    const [data, setData] = useState<UserData | null>(null);
+    const [data, setData] = useState<User | null>(null);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null); // Specify type explicitly
 
@@ -22,7 +15,6 @@ function UserDetails() {
         if (!id) return;
         const fetchData = async () => {
 
-            console.log("Fetching user with id:", id);
             try {
                 const user = await getUserById(id);
                 setData(user);
@@ -31,7 +23,7 @@ function UserDetails() {
                 const localStorageData = localStorage.getItem("users");
                 if (localStorageData) {
                     const users = JSON.parse(localStorageData);
-                    const user = users.find((user:any) => user.id == id);
+                    const user = users.find((user: any) => user.id == id);
                     if (user) {
                         setData(user);
                     } else {
@@ -52,8 +44,9 @@ function UserDetails() {
     return (
         <div className="userDetails">
             <h2>User Details</h2>
-            {loading && <CircularProgress/>} {/* Display a loading spinner while data is being fetched */}
-            {error && <h1>Error: {error}</h1>} {/* Display an error message if fetching data fails */}
+            {/* loading spinner while data is fetched */}
+            {loading && <CircularProgress/>}
+            {error && <h1>Error: {error}</h1>}
             {!loading && data && (
                 <TableContainer component={Paper}>
                     <Table>

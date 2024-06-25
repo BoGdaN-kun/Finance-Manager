@@ -17,7 +17,6 @@ function App() {
         <div className="App">
             <BrowserRouter>
                 <Routes>
-
                     <Route path="/" element={<Home/>}></Route>
                     <Route path="/create" element={<Create/>}></Route>
                     <Route path="/edit/:id" element={<Edit/>}></Route>

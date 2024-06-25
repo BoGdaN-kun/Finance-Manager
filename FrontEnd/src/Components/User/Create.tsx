@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import {useNavigate} from "react-router-dom";
 import {TextField, Button, Snackbar} from "@mui/material";
 
@@ -12,26 +12,37 @@ function Create() {
     const [address, setAddress] = React.useState('');
     const [phoneNumber, setPhoneNumber] = React.useState('');
     const [age, setAge] = React.useState(0);
+    const [password, setPassword] = React.useState('');
+    const [confirmPassword, setConfirmPassword] = useState('');
+
     const [snackbarOpen, setSnackbarOpen] = React.useState(false);
     const [snackbarMessage, setSnackbarMessage] = React.useState<string>('');
     const navigate = useNavigate();
 
     const handleSubmission = async (event: React.FormEvent) => {
         event.preventDefault();
-        const user = {name, email, address, phoneNumber, age};
+        if (password !== confirmPassword) {
+            setSnackbarMessage('Passwords do not match');
+            setSnackbarOpen(true);
+            setTimeout(() => {
+                setSnackbarOpen(false);
+            }, 5000);
+            return;
+        }
+
+        const user = {name, email, address, phoneNumber, age, password};
 
         try {
-            const response = await fetch('https://bogdan-mpp.azurewebsites.net/api/UserControllerAsync', {
+            const url = `${process.env.REACT_APP_API_URL}/api/User`;
+            const response = await fetch(url, {
                 method: 'POST',
                 headers: {"Content-Type": "application/json"},
                 credentials: 'include',
                 body: JSON.stringify(user)
             });
-
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
-
             console.log('New user added');
             navigate('/');
         } catch (error: any) {
@@ -39,9 +50,6 @@ function Create() {
 
             // Generate a unique identifier
             const id = Date.now().toString();
-            // Add id field to user object
-
-            //const userWithId = { id, ...user};
             const userWithId = {id, ...user, transactionCount: 0};
 
             // Retrieve local changes from storage
@@ -53,7 +61,7 @@ function Create() {
             localStorage.setItem('users', JSON.stringify(localChanges));
 
             const query = {
-                url: 'https://bogdan-mpp.azurewebsites.net/api/UserControllerAsync',
+                url: `${process.env.REACT_APP_API_URL}/api/User`,
                 type: 'POST',
                 headers: {"Content-Type": "application/json"},
                 body: JSON.stringify(user),
@@ -62,7 +70,6 @@ function Create() {
             const queries = JSON.parse(localStorage.getItem('queries') || '[]');
             queries.push(query);
             localStorage.setItem('queries', JSON.stringify(queries));
-            //localStorage.setItem('queries', JSON.stringify({url :'https://bogdan-mpp.azurewebsites.net/api/UserControllerAsync' , type:'POST', headers: { "Content-Type": "application/json" }, body: JSON.stringify(userWithId)}));
 
             setSnackbarMessage(`Error adding user: ${error.message}`);
             setSnackbarOpen(true);
@@ -122,6 +129,27 @@ function Create() {
                         variant="outlined"
                         value={age}
                         onChange={(e) => setAge(Number(e.target.value))}
+                    />
+                </div>
+                <div style={{marginBottom: "10px"}}>
+                    <TextField
+                        id="password"
+                        label="Password"
+                        type="password"
+                        variant="outlined"
+                        value={password}
+                        onChange={(e) => setPassword(e.target.value)}
+                    />
+                </div>
+
+                <div style={{marginBottom: "10px"}}>
+                    <TextField
+                        id="confirmPassword"
+                        label="Confirm Password"
+                        type="password"
+                        variant="outlined"
+                        value={confirmPassword}
+                        onChange={(e) => setConfirmPassword(e.target.value)}
                     />
                 </div>
 

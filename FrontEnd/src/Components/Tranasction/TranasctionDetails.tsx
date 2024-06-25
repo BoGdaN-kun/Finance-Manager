@@ -1,13 +1,13 @@
 import {useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
-import {Transaction} from "../../Domain/Transaction";
+import {ITransaction} from "../../Interfaces/ITransaction";
 import {getTransactionById} from "../../Service/TransactionsService";
 import {CircularProgress, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 
 
 function TranasctionDetails() {
     const {id} = useParams<{ id: string }>();
-    const [transaction, setTransaction] = useState<Transaction>();
+    const [transaction, setTransaction] = useState<ITransaction>();
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null); // Specify type explicitly
 
@@ -30,8 +30,8 @@ function TranasctionDetails() {
     return (
         <div>
             <h1>Tranasction Details</h1>
-            {loading && <CircularProgress/>} {/* Display a loading spinner while data is being fetched */}
-            {error && <h1>Error: {error}</h1>} {/* Display an error message if fetching data fails */}
+            {loading && <CircularProgress/>}
+            {error && <h1>Error: {error}</h1>}
             {!loading && transaction && (
                 <TableContainer component={Paper}>
                     <Table>

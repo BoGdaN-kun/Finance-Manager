@@ -29,7 +29,7 @@ function TransactionCreate() {
 
     const fetchSimepleUserDTO = async () => {
         try {
-            const response = await fetch('https://bogdan-mpp.azurewebsites.net/api/UserControllerAsync/idname',{credentials: 'include'});
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/User/idname`,{credentials: 'include'});
             if (!response.ok) {
                 throw new Error('Failed to fetch users');
             }
@@ -47,7 +47,7 @@ function TransactionCreate() {
         const transaction = {amount, date, description, category, userId};
 
         try {
-            const response = await fetch('https://bogdan-mpp.azurewebsites.net/api/TransactionControllerAsync', {
+            const response = await fetch(`${process.env.REACT_APP_API_URL}/api/Transaction`, {
                 method: 'POST',
                 headers: {"Content-Type": "application/json"},
                 credentials: 'include',
@@ -144,7 +144,7 @@ function TransactionCreate() {
                 open={snackbarOpen}
                 autoHideDuration={5000}
                 onClose={() => setSnackbarOpen(false)}
-                message={"Error in adding the Transaction"}
+                message={"Error in adding the ITransaction"}
             />
         </div>
     )

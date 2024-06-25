@@ -1,14 +1,13 @@
-import {HomeUser, User} from "../Domain/IUser";
+import {HomeUser, User} from "../Interfaces/IUser";
+import Home from "../Components/User/Home";
 
 
 const baseurl = `${process.env.REACT_APP_API_URL}/api/User`;
-console.log(baseurl);
 export const getUsers = (page: number): Promise<HomeUser[]> => {
-    const pageSize = 10; // Number of items per page
+    const pageSize = 10;
 
     const token = localStorage.getItem('token');
 
-    // Construct request headers
     const headers = {
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
@@ -21,15 +20,13 @@ export const getUsers = (page: number): Promise<HomeUser[]> => {
         .then(res => res.json())
         .then((users: HomeUser[]) => {
             if (Array.isArray(users)) {
-                // Process array of objects
                 console.log(users);
                 users.forEach(users => {
                     users.age = Number(users.age);
                 });
                 return users;
             } else {
-                // Process single object
-                console.log(users);
+
                 return [users]; // Convert single object to array
             }
 

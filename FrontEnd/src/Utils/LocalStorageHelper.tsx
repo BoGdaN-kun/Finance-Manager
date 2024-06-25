@@ -1,3 +1,6 @@
+import {User} from "../Interfaces/IUser";
+
+
 const pathToJSONFile = "../../localUsers.json";
 export async function loadJSONFile(): Promise<any> {
     try {
@@ -11,14 +14,7 @@ export async function loadJSONFile(): Promise<any> {
         return null;
     }
 }
-interface User {
-    id: string;
-    name: string;
-    email: string;
-    address: string;
-    phoneNumber: string;
-    age: number;
-}
+
 const updateJSONFile = async (newUsers: User[]) => {
     try {
         // Convert the new user data to JSON string

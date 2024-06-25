@@ -11,9 +11,9 @@ function LoginComponent() {
     const navigate = useNavigate();
     const handleSubmit = async (e : any) => {
         e.preventDefault();
-        
         try {
-            const response = await fetch('https://bogdan-mpp.azurewebsites.net/api/UserLogin/login', {
+            const baseurl = `${process.env.REACT_APP_API_URL}/api/UserLogin/login`;
+            const response = await fetch(baseurl, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -23,11 +23,10 @@ function LoginComponent() {
             });
             console.log(response.status)
             console.log(response)
-            if (response.status == 200) {
+            if (response.status === 200) {
                 const data = await response.json();
                 const token = data.token;
-                localStorage.setItem('token', token); // Store token in localStorage
-                // Redirect to dashboard or home page
+                localStorage.setItem('token', token);
                 navigate('/');
             } else {
                 setError('Invalid email or password');

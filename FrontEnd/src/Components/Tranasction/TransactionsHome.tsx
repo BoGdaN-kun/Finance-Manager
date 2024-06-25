@@ -1,6 +1,6 @@
-import {Transaction} from "../../Domain/Transaction";
+import {ITransaction} from "../../Interfaces/ITransaction";
 import React, {useEffect, useRef, useState} from "react";
-import {deleteUser} from "../../Service/Service";
+import {deleteUser} from "../../Service/UserService";
 import {Link} from "react-router-dom";
 import {
     Button,
@@ -18,14 +18,13 @@ import {deleteTransaction, getTransactions2} from "../../Service/TransactionsSer
 
 function TransactionsHome() {
 
-    const [transactions, setTransactions] = useState<Transaction[]>([]);
+    const [transactions, setTransactions] = useState<ITransaction[]>([]);
     const [page, setPage] = useState(1);
     const [offlineWarning, setOfflineWarning] = useState(false);
     const [serverDownWarning, setServerDownWarning] = useState(false);
     const tableEndRef = useRef<HTMLDivElement>(null);
 
     useEffect(() => {
-
 
 
         const fetchData = async () => {
@@ -70,7 +69,7 @@ function TransactionsHome() {
                     setPage(prevPage => prevPage + 1);
                 }
             },
-            { threshold: 0.5 }
+            {threshold: 0.5}
         );
 
         if (tableEndRef.current) {
@@ -85,7 +84,7 @@ function TransactionsHome() {
     }, []);
 
     const handleDelete = (id: string) => {
-        if (window.confirm("Are you sure you want to delete this Transaction?"))
+        if (window.confirm("Are you sure you want to delete this ITransaction?"))
             deleteTransaction(id).then(() => {
                 const newTransactions = transactions.filter((transaction) => transaction.id !== id);
                 setTransactions(newTransactions);
